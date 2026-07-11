@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding Gamificado IT2B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   PALETA IT2B (Design Moderno - RH)
+   ============================================================ */
+:root{
+  --orange: #e89a3c;          /* laranja principal */
+  --orange-light: #f5e6d3;    /* laranja claro */
+  --cream: #faf8f3;           /* fundo creme */
+  --gray-light: #f0ede8;      /* cinza claro (fundo) */
+  --gray-medium: #d4d0ca;     /* cinza médio */
+  --gray-dark: #6b6863;       /* cinza escuro (opções) */
+  --ink: #3a3a3a;             /* texto escuro */
+  --text: #555555;
+  --white: #ffffff;
+  --shadow: 0 12px 32px -8px rgba(40,40,40,.15);
+  --radius: 24px;
+}
+
+* {
+  font-family: 'Dosis', system-ui, sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  color:var(--text);
+  background: linear-gradient(135deg, var(--cream) 0%, var(--gray-light) 100%);
+  min-height:100%;
+  -webkit-font-smoothing:antialiased;
+  line-height:1.55;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Elementos de RH no fundo (esquerda e direita) */
+body::before {
+  content: '';
+  position: fixed;
+  left: -100px;
+  top: 50%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--gray-medium) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
+  transform: translateY(-50%);
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  right: -100px;
+  bottom: 0;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--gray-medium) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+  transform: rotate(45deg);
+}
+
+.wrap{max-width:760px;margin:0 auto;padding:32px 20px 80px;position:relative;z-index:1}
+
+/* Topbar com progresso */
+.topbar{
+  position:sticky;top:0;z-index:20;
+  backdrop-filter:saturate(140%) blur(12px);
+  background:rgba(250,248,243,.95);
+  border-bottom:none;
+}
+.topbar .row{max-width:760px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px}
+.brand{font-weight:600;color:var(--ink);font-size:15px;letter-spacing:.5px;white-space:nowrap;text-transform:uppercase}
+.brand b{color:var(--orange);font-weight:800}
+.progress-track{flex:1;height:6px;background:#e8e4df;border-radius:99px;overflow:hidden;border:none}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#f0a855 0%, var(--orange) 100%);border-radius:99px;transition:width .45s cubic-bezier(.4,0,.2,1)}
+.progress-label{font-size:11px;font-weight:700;color:var(--text);white-space:nowrap;font-variant-numeric:tabular-nums;text-transform:uppercase;letter-spacing:.3px}
+
+/* Cartão */
+.card{
+  background:var(--white);
+  border:none;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:48px;
+  animation:rise .6s cubic-bezier(.2,.7,.2,1) both;
+  backdrop-filter:blur(2px);
+}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* Tela de abertura */
+.cover{margin-bottom:20px;text-align:center}
+.logo{width:100px;height:100px;margin:0 auto 28px;display:block;filter:drop-shadow(0 8px 16px rgba(232,154,60,.2))}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--text);margin-bottom:12px}
+
+h1{
+  font-weight:800;
+  color:var(--ink);
+  font-size:clamp(32px,6vw,48px);
+  line-height:1.1;
+  margin:8px 0 4px;
+  letter-spacing:-1px;
+}
+
+h1 .accent{
+  color:var(--orange);
+  display:inline-block;
+  transition: all 0.3s ease;
+  cursor: default;
+  position: relative;
+}
+
+h1 .accent:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 4px 12px rgba(232,154,60,.4));
+  text-shadow: 0 0 20px rgba(232,154,60,.5);
+}
+
+.lead{color:var(--text);font-size:15px;margin:16px 0;line-height:1.7;font-weight:500}
+.lead b{color:var(--ink);font-weight:700}
+
+/* Termo de responsabilidade */
+.term-box{
+  background: linear-gradient(135deg, #fff9f0 0%, #faf5f0 100%);
+  border:2px solid var(--orange);
+  border-radius:20px;
+  padding:24px 26px;
+  margin:28px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.term-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(232,154,60,.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.term-box h3{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:12px;position:relative;z-index:1}
+.term-box .term-content{
+  font-size:13px;
+  color:var(--text);
+  line-height:1.6;
+  max-height:160px;
+  overflow-y:auto;
+  padding-right:10px;
+  position:relative;
+  z-index:1;
+}
+.term-content::-webkit-scrollbar{width:6px}
+.term-content::-webkit-scrollbar-track{background:#f5ede1}
+.term-content::-webkit-scrollbar-thumb{background:var(--orange);border-radius:3px}
+.term-check{display:flex;gap:12px;align-items:flex-start;margin-top:14px;position:relative;z-index:1}
+.term-check input[type="checkbox"]{
+  width:22px;height:22px;cursor:pointer;margin-top:0px;flex:none;accent-color:var(--orange);border-radius:4px;
+}
+.term-check label{cursor:pointer;font-size:13.5px;color:var(--text);font-weight:500}
+
+/* Formulário */
+.field{margin-top:20px}
+.field label{display:block;font-weight:700;font-size:13px;color:var(--ink);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.field label .req{color:var(--orange)}
+.field .hint{font-size:12px;color:var(--text);font-weight:400;margin-bottom:10px;opacity:.8}
+.field input{
+  width:100%;
+  padding:16px 22px;
+  font-size:15px;
+  font-family:inherit;
+  font-weight:500;
+  color:var(--ink);
+  background:#f5f3f0;
+  border:2px solid #e8e4df;
+  border-radius:50px;
+  transition:all .3s cubic-bezier(.2,.7,.2,1);
+}
+.field input:hover{
+  border-color:var(--orange);
+  background:#faf8f5;
+}
+.field input:focus{
+  outline:none;
+  border-color:var(--orange);
+  background:var(--white);
+  box-shadow:0 0 0 4px rgba(232,154,60,.12), 0 8px 16px rgba(232,154,60,.1);
+}
+.field input.err{
+  border-color:#d24b4b;
+  box-shadow:0 0 0 4px rgba(210,75,75,.1);
+  background:#fff5f5;
+}
+.errmsg{color:#d24b4b;font-size:12px;margin-top:8px;display:none;font-weight:600}
+.errmsg.show{display:block}
+
+/* Pergunta */
+.qnum{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--orange)}
+.qtext{font-weight:700;color:var(--ink);font-size:clamp(22px,3.5vw,28px);line-height:1.3;margin:12px 0 8px;letter-spacing:-.5px}
+.qhelp{color:var(--text);font-size:13px;margin:8px 0 0;font-weight:500}
+.qpts{display:inline-block;margin-top:12px;font-size:12px;font-weight:700;color:var(--white);background:var(--orange);padding:6px 14px;border-radius:20px}
+
+.options{margin-top:24px;display:flex;flex-direction:column;gap:14px}
+.option{
+  display:flex;gap:16px;align-items:flex-start;padding:18px 22px;cursor:pointer;
+  background:#f5f3f0;
+  border:2px solid #e8e4df;
+  border-radius:20px;
+  transition:all .3s cubic-bezier(.2,.7,.2,1);
+}
+.option:hover{
+  border-color:var(--orange);
+  background:#faf8f5;
+  transform:translateX(4px);
+}
+.option:active{transform:scale(.98)}
+.option.sel{
+  border-color:var(--gray-dark);
+  background:var(--gray-dark);
+  box-shadow:0 8px 20px rgba(107,104,99,.2);
+}
+.option.sel .otext{color:var(--white)}
+.option.sel .key{color:rgba(255,255,255,.7)}
+
+.radio{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  border:2.5px solid #d4d0ca;
+  flex:none;
+  margin-top:0;
+  display:grid;
+  place-items:center;
+  transition:all .3s;
+}
+.option:hover .radio{border-color:var(--orange)}
+.option.sel .radio{border-color:var(--white);background:var(--white)}
+
+.radio i{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--orange);
+  transform:scale(0);
+  transition:transform .3s cubic-bezier(.2,.7,.2,1);
+}
+.option.sel .radio i{transform:scale(1)}
+.option .otext{font-size:15px;color:var(--text);font-weight:500}
+.option .key{font-weight:700;color:var(--gray-medium);margin-right:4px;font-size:14px}
+
+/* Navegação */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:40px}
+.btn{
+  font-family:inherit;font-weight:700;font-size:14px;border-radius:50px;padding:16px 32px;cursor:pointer;
+  border:2px solid transparent;transition:all .3s cubic-bezier(.2,.7,.2,1);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.btn:active{transform:translateY(2px)}
+.btn-primary{
+  background:var(--orange);
+  color:var(--white);
+  box-shadow:0 12px 32px -8px rgba(232,154,60,.5);
+  border:2px solid var(--orange);
+}
+.btn-primary:hover{
+  background:#d68830;
+  border-color:#d68830;
+  box-shadow:0 16px 40px -8px rgba(232,154,60,.6);
+  transform:translateY(-2px);
+}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.btn-ghost{
+  background:transparent;
+  color:var(--text);
+  border-color:#d4d0ca;
+  font-weight:600;
+}
+.btn-ghost:hover{
+  background:#f5f3f0;
+  border-color:var(--orange);
+  color:var(--orange);
+}
+.btn-ghost:disabled{opacity:.35;cursor:not-allowed}
+.warn{font-size:13px;color:#d24b4b;font-weight:600;text-align:center;margin-top:14px;display:none}
+.warn.show{display:block}
+
+/* Resultado */
+.result{text-align:center}
+.score-num{
+  font-size:56px;
+  font-weight:800;
+  color:var(--orange);
+  line-height:1;
+  margin-top:8px;
+  letter-spacing:-1px;
+}
+.score-num small{font-size:26px;color:var(--gray-medium)}
+.score-pct{font-size:15px;color:var(--text);font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.medal-wrap{margin:32px auto 16px;max-width:320px;animation:pop .7s cubic-bezier(.2,1.3,.4,1) both}
+.medal-wrap svg{width:100%;height:auto;display:block;filter:drop-shadow(0 16px 40px rgba(40,40,40,.25))}
+@keyframes pop{from{transform:scale(.4) rotate(-10deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
+.result h2{
+  font-size:28px;
+  margin:20px 0 14px;
+  color:var(--ink);
+  font-weight:800;
+  letter-spacing:-.5px;
+}
+.tier-text{
+  color:var(--text);
+  font-size:14px;
+  line-height:1.7;
+  max-width:500px;
+  margin:0 auto;
+  text-align:left;
+  background:linear-gradient(135deg, #f5f3f0 0%, #faf8f5 100%);
+  border:2px solid #e8e4df;
+  border-radius:20px;
+  padding:22px 24px;
+  font-weight:500;
+}
+.btn-download{
+  margin-top:28px;
+  background:var(--orange);
+  color:var(--white);
+  box-shadow:0 14px 32px -8px rgba(232,154,60,.5);
+  border:2px solid var(--orange);
+}
+.btn-download:hover{
+  background:#d68830;
+  border-color:#d68830;
+  box-shadow:0 18px 40px -8px rgba(232,154,60,.6);
+  transform:translateY(-2px);
+}
+.dl-note{font-size:13px;color:var(--text);font-weight:600;margin-top:12px;min-height:18px}
+
+.footer{text-align:center;color:var(--text);font-size:11px;margin-top:32px;opacity:.7;font-weight:500;letter-spacing:.3px}
+.hidden{display:none!important}
+@media(max-width:560px){
+  .card{padding:32px 20px}
+  .field input{padding:14px 18px;font-size:14px}
+  .btn{padding:14px 24px;font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="row">
+    <div class="brand">Onboarding <b>IT2B</b> · 2026</div>
+    <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
+    <div class="progress-label" id="progLabel">Início</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div id="screen" class="card"><!-- conteúdo injetado por JS --></div>
+  <div class="footer">Programa de Onboarding IT2B · Bem-vindo ao time!</div>
+</div>
+
+<script>
+/* ============================================================
+   ⚙️  CONFIGURAÇÃO
+   ============================================================ */
+const CONFIG = {
+  WEBHOOK_URL: "", // Será preenchido depois com o URL do Power Automate
+  PONTOS_POR_QUESTAO: 5,   // 20 questões × 5 = 100 pontos
+
+  MEDALHAS: {
+    ouro: {
+      id:"o", min:80, nome:"Membro Oficial IT2B - OURO",
+      texto:"Parabéns! Você conquistou a Medalha de Ouro. Sua dedicação e conhecimento demonstram que você está pronto(a) para contribuir com excelência na IT2B. Você acertou 80% a 100% das questões. Bem-vindo(a) ao time!",
+      color:"#d4a845", rim:"#f3e2a4", accent:"#e9d292", textColor:"#ffffff", subColor:"#e7f7ed"
+    },
+    prata: {
+      id:"s", min:60, nome:"Membro Oficial IT2B - PRATA",
+      texto:"Ótimo! Você conquistou a Medalha de Prata. Você demonstra uma boa compreensão dos processos e valores da IT2B. Você acertou 60% a 79% das questões. Continue aprendendo e em breve será ouro!",
+      color:"#c0c0c0", rim:"#e8e8e8", accent:"#d3d3d3", textColor:"#333333", subColor:"#f0f0f0"
+    },
+    bronze: {
+      id:"b", min:0, nome:"Membro Oficial IT2B - BRONZE",
+      texto:"Bem-vindo! Você conquistou a Medalha de Bronze. Você está começando sua jornada na IT2B. Recomendamos revisar o Manual do Colaborador para aprofundar seu conhecimento. Você acertou até 59% das questões.",
+      color:"#cd7f32", rim:"#e8d5c4", accent:"#d9a77a", textColor:"#ffffff", subColor:"#f5e6d3"
+    }
+  }
+};
+
+/* ============================================================
+   📋  PERGUNTAS (20 questões do Manual IT2B)
+   ============================================================ */
+const QUESTOES = [
+  { texto:"Qual é a missão principal da IT2B?",
+    opcoes:["Entender as necessidades e requerimentos dos clientes, provendo soluções de TI que contribuam para a continuidade e crescimento dos seus negócios","Ser a maior empresa de tecnologia da América Latina","Fornecer serviços de consultoria exclusivamente para grandes corporações","Desenvolver softwares sob encomenda para o mercado financeiro"],
+    correta:0 },
+
+  { texto:"Quantos valores principais compõem o DNA da IT2B?",
+    opcoes:["4 valores","5 valores","7 valores","10 valores"],
+    correta:2 },
+
+  { texto:"Quem é o CEO da IT2B?",
+    opcoes:["João Vestri","Carlos Motti","Flávio Vestri","Fernando Martins"],
+    correta:1 },
+
+  { texto:"Qual é o e-mail correto para contato com Desenvolvimento Humano?",
+    opcoes:["recrutamento@it2b.com.br","desenvolvimentohumano@it2b.com.br","rh@it2b.com.br","qualidade@it2b.com.br"],
+    correta:1 },
+
+  { texto:"O que NÃO é uma responsabilidade esperada do colaborador?",
+    opcoes:["Cumprir sua jornada de trabalho","Utilizar o crachá de identificação quando exigido","Manter dados pessoais atualizados","Acessar informações confidenciais de clientes para uso pessoal"],
+    correta:3 },
+
+  { texto:"Qual é o usuário correto para acessar o portal de marcação de ponto?",
+    opcoes:["Nome + sobrenome","1.1 + matrícula","Email completo","CPF"],
+    correta:1 },
+
+  { texto:"Qual é a variação máxima de horário aceita no registro de ponto sem ser desconta?",
+    opcoes:["2 minutos","5 minutos, observado o máximo de 10 minutos diários","15 minutos","30 minutos"],
+    correta:1 },
+
+  { texto:"Qual é o prazo mínimo para solicitar compensação de horas?",
+    opcoes:["1 dia útil","2 dias úteis","5 dias úteis","10 dias úteis"],
+    correta:1 },
+
+  { texto:"Em quantos dias o atestado médico deve ser inserido no sistema após emissão?",
+    opcoes:["1 dia","2 dias","5 dias","7 dias"],
+    correta:1 },
+
+  { texto:"Qual é o período mínimo de contribuição ao INSS para licença maternidade?",
+    opcoes:["6 meses","1 ano","2 anos","3 anos"],
+    correta:1 },
+
+  { texto:"Em quantas etapas o salário é pago?",
+    opcoes:["Uma única vez","Duas etapas","Três etapas","Quatro etapas"],
+    correta:1 },
+
+  { texto:"Qual é o percentual adiantado no dia 20?",
+    opcoes:["20%","30%","40%","50%"],
+    correta:2 },
+
+  { texto:"Em quais datas o 13º salário é pago?",
+    opcoes:["Junho e dezembro","Setembro e dezembro","30 de novembro e 20 de dezembro","Julho e dezembro"],
+    correta:2 },
+
+  { texto:"Qual é o prazo de antecedência para agendar férias?",
+    opcoes:["15 dias","30 dias","45 dias","60 dias"],
+    correta:2 },
+
+  { texto:"Qual é o percentual de custeio do Plano de Saúde pela IT2B?",
+    opcoes:["25%","33%","50%","75%"],
+    correta:2 },
+
+  { texto:"Qual é o percentual máximo descontado para Vale Transporte?",
+    opcoes:["6%","8%","10%","12%"],
+    correta:0 },
+
+  { texto:"O que é obrigatório no ambiente de trabalho?",
+    opcoes:["Usar terno e gravata","Usar sapato social preto","Usar bom senso e roupas básicas e discretas","Usar uniforme em todas as áreas"],
+    correta:2 },
+
+  { texto:"Qual situação é considerada uma falta GRAVE?",
+    opcoes:["Chegar 5 minutos atrasado","Esquecer de trazer o crachá","Violação de segredo da empresa","Usar jeans no dia"],
+    correta:2 },
+
+  { texto:"Qual é a PRIMEIRA medida disciplinar aplicada?",
+    opcoes:["Advertência verbal","Advertência por escrito","Suspensão","Demissão"],
+    correta:0 },
+
+  { texto:"Qual é a plataforma de comunicação corporativa oficial?",
+    opcoes:["WhatsApp","Facebook","Twitter","IT2BNet (https://it2bgss.sharepoint.com/sites/IT2BNet)"],
+    correta:3 }
+];
+
+/* ============================================================
+   🔧  LÓGICA
+   ============================================================ */
+const TOTAL_PONTOS = QUESTOES.length * CONFIG.PONTOS_POR_QUESTAO;
+const LETRAS = ["A","B","C","D","E"];
+const state = { etapa:"intro", q:0, nome:"", email:"", cpf:"", respostas:Array(QUESTOES.length).fill(null), termAceito:false };
+const el = document.getElementById("screen");
+const progFill = document.getElementById("progFill");
+const progLabel = document.getElementById("progLabel");
+
+function setProgresso(){
+  let pct = 0, label = "Início";
+  if(state.etapa==="quiz"){ pct = ((state.q)/QUESTOES.length)*100; label = `${state.q+1} / ${QUESTOES.length}`; }
+  else if(state.etapa==="result"){ pct = 100; label = "Concluído"; }
+  progFill.style.width = pct + "%";
+  progLabel.textContent = label;
+}
+
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+/* ---------- TELA 1: BOAS-VINDAS + TERMO + CADASTRO ---------- */
+function renderIntro(){
+  state.etapa="intro"; setProgresso();
+  el.innerHTML = `
+    <div class="cover">
+      <svg class="logo" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+        <!-- Fitas da medalha -->
+        <rect x="35" y="0" width="30" height="28" fill="#d4a845" opacity="0.9"/>
+        <path d="M35,28 L40,24 L60,24 L65,28 Z" fill="#c9942d"/>
+        <!-- Corpo da medalha (circulo) -->
+        <circle cx="50" cy="70" r="35" fill="#d4a845" stroke="#c9942d" stroke-width="2"/>
+        <circle cx="50" cy="70" r="32" fill="#e6c547"/>
+        <circle cx="50" cy="70" r="30" fill="url(#goldGrad)" stroke="#d4a845" stroke-width="1"/>
+        <!-- Detalhes -->
+        <circle cx="50" cy="70" r="24" fill="none" stroke="#f4e6b8" stroke-width="2" stroke-dasharray="3,4"/>
+        <circle cx="50" cy="70" r="20" fill="none" stroke="#c9942d" stroke-width="1" opacity="0.5"/>
+        <!-- Estrela central -->
+        <g transform="translate(50,60)">
+          <path d="M0,-12 L3,-4 L12,-4 L5,2 L8,10 L0,5 L-8,10 L-5,2 L-12,-4 L-3,-4 Z" fill="#fff" opacity="0.9"/>
+        </g>
+        <!-- Número 1 (ou emblema) -->
+        <text x="50" y="85" text-anchor="middle" font-size="32" font-weight="bold" fill="#fff" opacity="0.8">✓</text>
+        <defs>
+          <radialGradient id="goldGrad">
+            <stop offset="0%" style="stop-color:#fff;stop-opacity:0.4"/>
+            <stop offset="70%" style="stop-color:#f4e6b8"/>
+            <stop offset="100%" style="stop-color:#d4a845"/>
+          </radialGradient>
+        </defs>
+      </svg>
+      <div class="eyebrow">Bem-vindo ao Onboarding</div>
+      <h1><span class="accent">Bem-vindo ao Onboarding IT2B</span></h1>
+    </div>
+
+    <p class="lead">Olá! Este é o seu <b>Onboarding Gamificado</b>. Você vai responder 20 perguntas sobre os processos, políticas e valores da IT2B. Ao final, receberá uma <b>Medalha de Reconhecimento</b> (Ouro, Prata ou Bronze) conforme seu desempenho.</p>
+
+    <div class="term-box">
+      <h3>📋 Termo de Responsabilidade</h3>
+      <div class="term-content">
+        <p><strong>Ao responder este quiz, você confirma que:</strong></p>
+        <ul style="margin-left:20px;margin-top:10px;">
+          <li>Leu e compreendeu o Manual do Colaborador IT2B 2025</li>
+          <li>Assistiu ao vídeo de integração institucional</li>
+          <li>Concorda em cumprir as normas, políticas e valores da IT2B</li>
+          <li>Entende sua responsabilidade sobre Segurança da Informação, Compliance e Ética</li>
+          <li>Autoriza o registro de sua participação e desempenho para fins de RH</li>
+        </ul>
+        <p style="margin-top:12px;"><strong>Responsabilidades:</strong> Você se compromete a cumprir todas as orientações contidas no Manual do Colaborador, respeitando prazos, normas internas e diretrizes de conduta profissional.</p>
+      </div>
+      <div class="term-check">
+        <input type="checkbox" id="termCheck">
+        <label for="termCheck">Li, compreendi e aceito os termos acima</label>
+      </div>
+      <div class="errmsg" id="e-term">Você deve aceitar os termos para continuar.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-nome">Nome completo <span class="req">*</span></label>
+      <input id="f-nome" type="text" placeholder="Digite seu nome completo" value="${esc(state.nome)}" autocomplete="name">
+      <div class="errmsg" id="e-nome">Por favor, preencha seu nome completo.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-email">E-mail <span class="req">*</span></label>
+      <div class="hint">Seu e-mail corporativo IT2B.</div>
+      <input id="f-email" type="email" placeholder="nome@it2b.com.br" value="${esc(state.email)}" autocomplete="email">
+      <div class="errmsg" id="e-email">Informe um e-mail válido.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-cpf">CPF <span class="req">*</span></label>
+      <div class="hint">Digite apenas números (Ex: 12345678901)</div>
+      <input id="f-cpf" type="text" placeholder="Apenas números" value="${esc(state.cpf)}" maxlength="11">
+      <div class="errmsg" id="e-cpf">Informe um CPF válido (11 dígitos).</div>
+    </div>
+
+    <div class="nav" style="justify-content:flex-end">
+      <button class="btn btn-primary" id="btn-start">Iniciar Quiz →</button>
+    </div>
+  `;
+
+  document.getElementById("btn-start").onclick = iniciar;
+  document.getElementById("termCheck").addEventListener("change", ()=>{
+    document.getElementById("e-term").classList.remove("show");
+  });
+
+  el.querySelectorAll("input[type='text'], input[type='email']").forEach(i=>
+    i.addEventListener("keydown",e=>{ if(e.key==="Enter"){e.preventDefault();iniciar();} })
+  );
+}
+
+function iniciar(){
+  const termo = document.getElementById("termCheck");
+  const nome = document.getElementById("f-nome");
+  const email = document.getElementById("f-email");
+  const cpf = document.getElementById("f-cpf");
+
+  let ok = true;
+  const reTermo = termo.checked;
+  const reNome = nome.value.trim().length >= 3;
+  const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+  const reCPF = /^\d{11}$/.test(cpf.value.trim());
+
+  if(!reTermo){ document.getElementById("e-term").classList.add("show"); ok=false; }
+  nome.classList.toggle("err",!reNome); document.getElementById("e-nome").classList.toggle("show",!reNome);
+  email.classList.toggle("err",!reEmail); document.getElementById("e-email").classList.toggle("show",!reEmail);
+  cpf.classList.toggle("err",!reCPF); document.getElementById("e-cpf").classList.toggle("show",!reCPF);
+
+  if(!reTermo || !reNome || !reEmail || !reCPF){ ok=false; }
+  if(!ok) return;
+
+  state.nome = nome.value.trim();
+  state.email = email.value.trim();
+  state.cpf = cpf.value.trim();
+  state.etapa = "quiz";
+  state.q = 0;
+  renderQuestao();
+}
+
+/* ---------- TELA 2: PERGUNTAS ---------- */
+function renderQuestao(){
+  setProgresso();
+  const q = QUESTOES[state.q];
+  const sel = state.respostas[state.q];
+
+  el.innerHTML = `
+    <div class="qnum">Questão ${state.q+1} de ${QUESTOES.length}</div>
+    <h2 class="qtext">${esc(q.texto)}</h2>
+    <span class="qpts">${CONFIG.PONTOS_POR_QUESTAO} pontos</span>
+
+    <div class="options" id="opts">
+      ${q.opcoes.map((op,i)=>`
+        <div class="option ${sel===i?"sel":""}" data-i="${i}">
+          <div class="radio"><i></i></div>
+          <div class="otext"><span class="key">${LETRAS[i]})</span> ${esc(op)}</div>
+        </div>`).join("")}
+    </div>
+
+    <div class="warn" id="warn">Selecione uma alternativa para continuar.</div>
+
+    <div class="nav">
+      <button class="btn btn-ghost" id="btn-prev" ${state.q===0?"disabled":""}>← Voltar</button>
+      <button class="btn btn-primary" id="btn-next">${state.q===QUESTOES.length-1?"Finalizar e Ver Medalha":"Próxima →"}</button>
+    </div>
+  `;
+
+  el.querySelectorAll(".option").forEach(o=>o.onclick=()=>{
+    state.respostas[state.q]=parseInt(o.dataset.i);
+    el.querySelectorAll(".option").forEach(x=>x.classList.remove("sel"));
+    o.classList.add("sel");
+    document.getElementById("warn").classList.remove("show");
+  });
+
+  document.getElementById("btn-prev").onclick=()=>{ if(state.q>0){state.q--;renderQuestao();} };
+  document.getElementById("btn-next").onclick=avancar;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function avancar(){
+  if(state.respostas[state.q]===null){ document.getElementById("warn").classList.add("show"); return; }
+  if(state.q < QUESTOES.length-1){ state.q++; renderQuestao(); }
+  else { finalizar(); }
+}
+
+/* ---------- CÁLCULO E ENVIO ---------- */
+function calcular(){
+  let acertos=0;
+  state.respostas.forEach((r,i)=>{ if(r===QUESTOES[i].correta) acertos++; });
+  const pontos = acertos * CONFIG.PONTOS_POR_QUESTAO;
+  const pct = Math.round((pontos/TOTAL_PONTOS)*100);
+  let medalha;
+  if(pct>=CONFIG.MEDALHAS.ouro.min) medalha=CONFIG.MEDALHAS.ouro;
+  else if(pct>=CONFIG.MEDALHAS.prata.min) medalha=CONFIG.MEDALHAS.prata;
+  else medalha=CONFIG.MEDALHAS.bronze;
+  return {acertos,pontos,pct,medalha};
+}
+
+async function enviar(dados){
+  if(!CONFIG.WEBHOOK_URL){ console.warn("WEBHOOK_URL vazio — dados NÃO enviados:",dados); return "skip"; }
+  try{
+    await fetch(CONFIG.WEBHOOK_URL,{
+      method:"POST",
+      mode:"no-cors",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(dados)
+    });
+    return "ok";
+  }catch(err){ console.error("Falha ao enviar:",err); return "erro"; }
+}
+
+function finalizar(){
+  if(state.respostas[state.q]===null){ document.getElementById("warn").classList.add("show"); return; }
+  const r = calcular();
+  state.etapa="result"; setProgresso();
+  const med = r.medalha;
+  const nomeLimpo = state.nome.length>34 ? state.nome.slice(0,33)+"…" : state.nome;
+
+  el.innerHTML = `
+    <div class="result">
+      <div class="score-pct" style="margin-bottom:4px">${r.acertos} de ${QUESTOES.length} acertos</div>
+      <div class="score-num">${r.pontos}<small> / ${TOTAL_PONTOS}</small></div>
+      <div class="score-pct">${r.pct}% de aproveitamento</div>
+
+      <div class="medal-wrap">${medalSVG(med, nomeLimpo, r.pontos, TOTAL_PONTOS, r.pct)}</div>
+
+      <h2 style="color:${med.color}">${esc(med.nome)}</h2>
+      <p class="tier-text">${esc(med.texto)}</p>
+
+      <button class="btn btn-download" id="btn-dl">⬇&nbsp; Baixar minha Medalha (PNG)</button>
+      <div class="dl-note" id="dlnote"></div>
+    </div>
+  `;
+
+  document.getElementById("btn-dl").onclick = ()=>baixarMedalha(state.nome);
+  window.scrollTo({top:0,behavior:"smooth"});
+
+  /* Enviar dados ao Power Automate */
+  const agora = new Date();
+  const tz = { timeZone: "America/Sao_Paulo" };
+  enviar({
+    nome: state.nome,
+    email: state.email,
+    cpf: state.cpf,
+    acertos: r.acertos,
+    totalQuestoes: QUESTOES.length,
+    pontos: r.pontos,
+    totalPontos: TOTAL_PONTOS,
+    percentual: r.pct,
+    medalha: med.nome,
+    data: agora.toLocaleDateString("pt-BR", tz),
+    hora: agora.toLocaleTimeString("pt-BR", { ...tz, hour:"2-digit", minute:"2-digit" }),
+    dataHora: agora.toISOString(),
+    finalizado: "Sim"
+  });
+}
+
+/* Desenha a medalha em SVG (design robusto Opus) — 3D volumétrico, logo IT2B 20 ANOS */
+function medalSVG(t, nome, pontos, total, pct){
+  /* Paleta 3-tons por tier: claro (rim) -> médio (color) -> escuro (deep) */
+  const PAL = {
+    o: { light:"#f3e2a4", mid:"#d4a845", deep:"#8b7a00", edge:"#6b5e00", ribDeep:"#7a6a00" }, // OURO
+    s: { light:"#e8e8e8", mid:"#c0c0c0", deep:"#708070", edge:"#5c6960", ribDeep:"#5f6d64" }, // PRATA
+    b: { light:"#e8d5c4", mid:"#cd7f32", deep:"#5c360f", edge:"#472809", ribDeep:"#6e4113" }  // BRONZE
+  };
+  const p = PAL[t.id] || PAL.o;
+  const uid = t.id; // sufixo único de defs por tier
+  const nameSize = nome.length>28 ? 15 : (nome.length>20 ? 17 : (nome.length>14 ? 19 : 21));
+
+  return `
+  <svg id="medalSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 320" width="600" height="640" font-family="'Dosis', Arial, sans-serif">
+    <defs>
+      <!-- Corpo da medalha (luz superior-esquerda) -->
+      <radialGradient id="mg-${uid}" cx="38%" cy="30%" r="72%">
+        <stop offset="0%"  stop-color="${p.light}"/>
+        <stop offset="46%" stop-color="${p.mid}"/>
+        <stop offset="100%" stop-color="${p.deep}"/>
+      </radialGradient>
+      <!-- Brilho de vidro no topo -->
+      <linearGradient id="sh-${uid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#fff" stop-opacity="0.55"/>
+        <stop offset="42%" stop-color="#fff" stop-opacity="0"/>
+      </linearGradient>
+      <!-- Fita com gradiente cor-matched -->
+      <linearGradient id="rb-${uid}" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="${p.ribDeep}"/>
+        <stop offset="48%"  stop-color="${p.mid}"/>
+        <stop offset="52%"  stop-color="${p.light}"/>
+        <stop offset="100%" stop-color="${p.ribDeep}"/>
+      </linearGradient>
+      <!-- Medalhão interno (assenta o logo) -->
+      <radialGradient id="in-${uid}" cx="42%" cy="34%" r="70%">
+        <stop offset="0%"  stop-color="${p.light}"/>
+        <stop offset="60%" stop-color="${p.mid}"/>
+        <stop offset="100%" stop-color="${p.deep}"/>
+      </radialGradient>
+      <filter id="ds-${uid}" x="-30%" y="-30%" width="160%" height="160%">
+        <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.35"/>
+      </filter>
+    </defs>
+
+    <!-- Sombra projetada no chão -->
+    <ellipse cx="150" cy="252" rx="86" ry="14" fill="#000" opacity="0.14"/>
+
+    <!-- ===== FITAS (atrás do disco) ===== -->
+    <g filter="url(#ds-${uid})">
+      <!-- fita esquerda -->
+      <path d="M112,10 L146,10 L176,150 L140,150 Z" fill="url(#rb-${uid})"/>
+      <path d="M112,10 L124,10 L152,150 L140,150 Z" fill="${p.deep}" opacity="0.28"/>
+      <!-- rabo de andorinha esquerdo -->
+      <path d="M112,10 L146,10 L129,28 Z" fill="${p.ribDeep}"/>
+      <!-- fita direita -->
+      <path d="M188,10 L154,10 L124,150 L160,150 Z" fill="url(#rb-${uid})"/>
+      <path d="M188,10 L176,10 L148,150 L160,150 Z" fill="${p.deep}" opacity="0.28"/>
+      <!-- rabo de andorinha direito -->
+      <path d="M188,10 L154,10 L171,28 Z" fill="${p.ribDeep}"/>
+    </g>
+
+    <!-- ===== DISCO DA MEDALHA (camadas 3D) ===== -->
+    <!-- aro externo escuro (profundidade) -->
+    <circle cx="150" cy="148" r="97" fill="${p.edge}"/>
+    <circle cx="150" cy="148" r="94" fill="${p.deep}"/>
+    <!-- corpo principal -->
+    <circle cx="150" cy="148" r="90" fill="url(#mg-${uid})" stroke="${p.edge}" stroke-width="1.5" filter="url(#ds-${uid})"/>
+    <!-- anéis de relevo -->
+    <circle cx="150" cy="148" r="86" fill="none" stroke="#fff" stroke-width="1" opacity="0.30"/>
+    <circle cx="150" cy="148" r="86" fill="none" stroke="${p.edge}" stroke-width="1.4" opacity="0.55"/>
+    <circle cx="150" cy="148" r="80" fill="none" stroke="${p.deep}" stroke-width="1" opacity="0.45" stroke-dasharray="4 5"/>
+    <!-- textura fina animada -->
+    <circle cx="150" cy="148" r="72" fill="none" stroke="#fff" stroke-width="1" opacity="0.16" stroke-dasharray="3 8">
+      <animateTransform attributeName="transform" type="rotate" from="0 150 148" to="360 150 148" dur="48s" repeatCount="indefinite"/>
+    </circle>
+    <!-- brilho de vidro (topo) -->
+    <circle cx="150" cy="148" r="90" fill="url(#sh-${uid})"/>
+    <!-- highlight especular -->
+    <ellipse cx="120" cy="112" rx="34" ry="20" fill="#fff" opacity="0.18" transform="rotate(-28 120 112)"/>
+
+    <!-- Texto curvo "MEMBRO IT2B" (branco) ao redor do topo -->
+    <path id="arc-top-${uid}" d="M84,148 A66,66 0 0 1 216,148" fill="none"/>
+    <path id="arc-bot-${uid}" d="M92,148 A58,58 0 0 0 208,148" fill="none"/>
+    <text font-size="15" font-weight="800" letter-spacing="3.5" fill="#ffffff"
+          style="paint-order:stroke;stroke:${p.edge};stroke-width:0.6px;">
+      <textPath href="#arc-top-${uid}" startOffset="50%" text-anchor="middle">MEMBRO&#160;IT2B</textPath>
+    </text>
+    <text font-size="9" font-weight="700" letter-spacing="2.5" fill="#ffffff" opacity="0.9">
+      <textPath href="#arc-bot-${uid}" startOffset="50%" text-anchor="middle">★ INTEGRAÇÃO OFICIAL ★</textPath>
+    </text>
+
+    <!-- ===== LOGO IT2B 20 ANOS (centro) ===== -->
+    <g transform="translate(150,150)">
+      <circle r="46" fill="url(#in-${uid})" stroke="${p.edge}" stroke-width="1.2"/>
+      <circle r="46" fill="none" stroke="#fff" stroke-width="1" opacity="0.35"/>
+      <!-- placa vermelha da marca -->
+      <rect x="-34" y="-24" width="68" height="28" rx="5" fill="#e11d2a" stroke="#a30f1a" stroke-width="1.2" filter="url(#ds-${uid})"/>
+      <rect x="-34" y="-24" width="68" height="12" rx="5" fill="#fff" opacity="0.14"/>
+      <text x="0" y="-3" text-anchor="middle" font-size="20" font-weight="800" fill="#ffffff" letter-spacing="1.5">IT2B</text>
+      <!-- 20 ANOS -->
+      <text x="0" y="22" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="3"
+            style="paint-order:stroke;stroke:${p.edge};stroke-width:0.5px;">20&#160;ANOS</text>
+    </g>
+
+    <!-- Nome do colaborador (branco, Dosis 800) -->
+    <text x="150" y="285" text-anchor="middle" fill="#000" opacity="0.16"
+          font-size="${nameSize}" font-weight="800" letter-spacing="0.4">${esc(nome)}</text>
+    <text x="150" y="284" text-anchor="middle" fill="#ffffff"
+          font-size="${nameSize}" font-weight="800" letter-spacing="0.4"
+          style="paint-order:stroke;stroke:${p.deep};stroke-width:2px;">${esc(nome)}</text>
+
+    <!-- Pontuação -->
+    <text x="150" y="306" text-anchor="middle" fill="${p.deep}" font-size="12" font-weight="700"
+          letter-spacing="0.5">${pontos} / ${total} pontos · ${pct}%</text>
+  </svg>`;
+}
+
+/* Converte SVG em PNG e baixa */
+function baixarMedalha(nome){
+  const note=document.getElementById("dlnote");
+  const svgEl=document.getElementById("medalSVG");
+  if(!svgEl) return;
+  const safe=(nome||"colaborador").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-zA-Z0-9]+/g,"_").replace(/^_+|_+$/g,"");
+  const xml=new XMLSerializer().serializeToString(svgEl);
+  const url=URL.createObjectURL(new Blob([xml],{type:"image/svg+xml;charset=utf-8"}));
+  const img=new Image();
+  img.onload=function(){
+    const s=2, cv=document.createElement("canvas"); cv.width=600*s; cv.height=640*s;
+    const ctx=cv.getContext("2d"); ctx.scale(s,s); ctx.drawImage(img,0,0,600,640);
+    URL.revokeObjectURL(url);
+    cv.toBlob(function(b){
+      const a=document.createElement("a"); a.href=URL.createObjectURL(b);
+      a.download="Medalha_IT2B_"+safe+".png";
+      document.body.appendChild(a); a.click(); a.remove();
+      if(note) note.textContent="✓ Medalha baixada! Verifique sua pasta de downloads.";
+    },"image/png");
+  };
+  img.onerror=function(){
+    const a=document.createElement("a"); a.href=url; a.download="Medalha_IT2B_"+safe+".svg"; a.click();
+    if(note) note.textContent="✓ Medalha baixada (formato SVG).";
+  };
+  img.src=url;
+}
+
+/* Start */
+renderIntro();
+</script>
+</body>
+</html>
